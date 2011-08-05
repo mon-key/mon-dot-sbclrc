@@ -5,6 +5,9 @@
 ;;; FILE-CREATED:
 ;;; <Timestamp: #{2009-09-06T08:18:52-04:00Z}#{09367} - by MON>
 ;;;
+;;; :SEE (URL `https://github.com/mon-key/mon-dot-sbclrc')
+;;; :SEE (URL `git://github.com/mon-key/mon-dot-sbclrc.git')
+;;;
 ;;; ================================================================
 ;;; Copyright (C) - MON KEY - 2009-2011
 ;;; ================================================================
@@ -14,7 +17,7 @@
 
 (in-package :common-lisp-user)
 
-;; :NOTE on slackware the system needs 
+;; :NOTE On Slackware the system needs 
 ;; LANG=en_US.UTF-8
 ;; shell> export LC_CTYPE=en_US.UTF-8
 ;;
@@ -114,7 +117,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 ;;   "MON" => "MON;**;*.*",  "QL"  => "QL;**;*.*" 
 ;;   ""    => ";**;*.*", nil   => "**;*.*"" 
 ;;
-;; (fundoc '%%build-base-fasl-logical-pathname-translations
+;; %%build-base-fasl-logical-pathname-translations
 ;;   "Return a list for use with setf of cl:logical-pathname-translations.
 ;; Returned translations point into the default asdf fasl cache as per the
 ;; environmental variable "XDG_CACHE_HOME" and `asdf::*output-translations*'.
@@ -291,8 +294,6 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 ;; (translate-logical-pathname  "MON:mon-slime-extend;")
 ;; (translate-logical-pathname  "MON:user-man-port;")
 
-
-;; :SLAPPY/ARCH
 (loop
    for logical in (list "MON:mon-slime-extend;" "MON:clime;"
                         "MON:fsdb-niko-fork-GIT;" "MON:cl-bmp;"
@@ -309,10 +310,6 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 #+quicklisp 
 (defun mon-load-systems (systems)
   (ql:quickload systems :verbose t :explain t))
-;;
-;; (asdf:system-source-directory :mon)
-;; (asdf:system-source-directory :dbc)
-;; (mon-load-systems '(:mon :dbc :userman))
 
 ;;; ==============================
 ;;; .sbclrc ends here

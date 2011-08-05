@@ -1,3 +1,3 @@
-A simple schem for setting up some my system releveant logical pathnames.
-This is done from ~/.sbclrc but is easly adaptable for loading from some other location if one so desired
+A simple scheme for initializing logical pathnames relevant to my system.
+This is done from ~/.sbclrc but the code is easly adaptable for loading from some other location if one so desired.
 
