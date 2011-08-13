@@ -17,11 +17,11 @@
 
 (in-package :common-lisp-user)
 
-;; :NOTE On Slackware the system needs 
+;; :NOTE On Slackware 13 our system needs:
 ;; LANG=en_US.UTF-8
 ;; shell> export LC_CTYPE=en_US.UTF-8
 ;;
-;; sb-impl::*external-formats* sb-ext: 
+;; sb-impl::*external-formats* sb-ext:
 ;; *external-formats* *external-formats*
 ;; (sb-impl::get-external-format SB-IMPL::*DEFAULT-EXTERNAL-FORMAT*)
 #+sbcl (unless (eq sb-impl::*default-external-format* :UTF-8)
@@ -54,7 +54,7 @@
 ;;; for line-edit
 ;;; Check for --no-linedit command-line option.
 (if (member "--no-linedit" sb-ext:*posix-argv* :test 'equal)
-    (setf sb-ext:*posix-argv* 
+    (setf sb-ext:*posix-argv*
 	  (remove "--no-linedit" sb-ext:*posix-argv* :test 'equal))
     (when (interactive-stream-p *terminal-io*)
       ;; (setf (asdf::output-translations)  (asdf:clear-output-translations)
@@ -68,12 +68,12 @@
 Its values names a directory in native namestring form.
 If a trailing #\\/ is not present, one is concatentated to form a directory namestring.
 The contents of this directory should contain site local lisp source code.
-Default is \"CL_MON_CODE\". 
+Default is \"CL_MON_CODE\".
 An error is signaled if ENVIRONMENTAL-VARIABLE is not present in the current process environment.
 An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directory."
   (declare (string environmental-variable))
   (let ((env-val (sb-posix:getenv (string-upcase environmental-variable))))
-    (unless env-val 
+    (unless env-val
       (error "arg ENVIRONMENTAL-VARIABLE not in current process environment, got: ~S"
              environmental-variable))
     (setf env-val 
@@ -111,11 +111,11 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 ;; imp-version-os-arch-string
 ;; "Return a string with the form:
 ;;   "<LISP-IMPLEMENTATION-TYPE>-<LISP-IMPLEMENTATION-VERSION>-<OS>-<PROC>"
-;;  The value of <LISP-IMPLEMENTATION-TYPE> and <LISP-IMPLEMENTATION-VERSION> are as per 
+;;  The value of <LISP-IMPLEMENTATION-TYPE> and <LISP-IMPLEMENTATION-VERSION> are as per
 ;;  `cl:lisp-implementation-type' and `lisp-implementation-version' respectively.
 ;; "Convert LOGICAL-DIR to a partial logical namestring.
-;;   "MON" => "MON;**;*.*",  "QL"  => "QL;**;*.*" 
-;;   ""    => ";**;*.*", nil   => "**;*.*"" 
+;;   "MON" => "MON;**;*.*",  "QL"  => "QL;**;*.*"
+;;   ""    => ";**;*.*", nil   => "**;*.*""
 ;;
 ;; %%build-base-fasl-logical-pathname-translations
 ;;   "Return a list for use with setf of cl:logical-pathname-translations.
@@ -128,16 +128,16 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 ;; `cl:logical-pathname-translations'.
 ;; LOGICAL-QL-HOST defaults to "QL". The translations associated with it will
 ;; correspond to some Quicklisp path beneath ~/.cache/common-lisp/
-;; LOGICAL-LOCAL-CODE-HOST defaults to "MON". 
+;; LOGICAL-LOCAL-CODE-HOST defaults to "MON".
 ;; The translations associated with it will correspond to paths beneath
 ;; ENV-LOCAL-CODE-VAR.
 ;; Keywords SYSTEM-OS and SYSTEM-PROC are a symbol/keywords to search for in
 ;; `cl:*features*'.
-;; SYSTEM-OS identifies the system operating system. Default is :LINUX 
+;; SYSTEM-OS identifies the system operating system. Default is :LINUX
 ;; SYSTEM-PROC identifies the system processer type. Default is :X86
 ;; :EXAMPLE
 ;;
-;;  (%%build-base-fasl-logical-pathname-translations 
+;;  (%%build-base-fasl-logical-pathname-translations
 ;;   :logical-local-directory "MON"
 ;;   :logical-ql-directory     "QL"
 ;;   :env-local-code-var      "CL_MON_CODE")
@@ -177,7 +177,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
              (format nil "~(~A-~A-~A-~A~)"
                      (lisp-implementation-type)
                      (lisp-implementation-version)
-                     (car (member system-os   *features*)) 
+                     (car (member system-os   *features*))
                      (car (member system-proc *features*))))
            (partial-logical-namestring (logical-dir)
              (declare ((or string null) logical-dir))
@@ -190,18 +190,18 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
                          (list (partial-logical-namestring partial) path))
                      logical-dirs pathnames)))
     (let* ((cl-mon-code-env        (%%env-local-code-path env-local-code-var))
-           (cache-impl-and-version (merge-pathnames 
+           (cache-impl-and-version (merge-pathnames
                                     (make-pathname :directory (list :relative (imp-version-os-arch-string)))
-                                    (merge-pathnames 
+                                    (merge-pathnames
                                      (make-pathname :directory (list :relative ".cache" "common-lisp"))
-                                     (user-homedir-pathname)))) 
-           (cl-mon-code-dir        (merge-pathnames 
-                                    (mk-path-w-name-type-wild (nconc-wild-inferiors (nsub-rel-abs cl-mon-code-env))) 
+                                     (user-homedir-pathname))))
+           (cl-mon-code-dir        (merge-pathnames
+                                    (mk-path-w-name-type-wild (nconc-wild-inferiors (nsub-rel-abs cl-mon-code-env)))
                                     cache-impl-and-version))
-           (cache-home            (merge-pathnames 
+           (cache-home            (merge-pathnames
                                    (make-pathname :directory (nsub-rel-abs (user-homedir-pathname)))
                                    cache-impl-and-version))
-           (cache-ql-wilden       (merge-pathnames 
+           (cache-ql-wilden       (merge-pathnames
                                    (mk-path-w-name-type-wild (nconc-wild-inferiors (nsub-rel-abs "quicklisp/dists/quicklisp/software/")))
                                    cache-home))
            (cache-home-wilden     (mk-path-w-name-type-wild (nconc-wild-inferiors (dir-parts cache-home)))))
@@ -217,12 +217,12 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
              (declare (string target-logical-pathname)
                       ((or string pathname) trans-logical-pathname)
                       ((or string null) inject-component))
-             (let ((maybe-injected-wild-inferiors (or (and inject-component 
+             (let ((maybe-injected-wild-inferiors (or (and inject-component
                                                            (list inject-component :wild-inferiors))
                                                       (list :wild-inferiors))))
                (list target-logical-pathname
-                     (namestring 
-                      (make-pathname :directory (nconc 
+                     (namestring
+                      (make-pathname :directory (nconc
                                                  (pathname-directory (translate-logical-pathname (pathname trans-logical-pathname)))
                                                  maybe-injected-wild-inferiors)
                                      :name :wild
@@ -230,9 +230,9 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
     (map 'list #'wild-logical-components wild-logical-specs)))
 
 (setf (logical-pathname-translations "BASE-FASL")
-      (%%build-base-fasl-logical-pathname-translations 
+      (%%build-base-fasl-logical-pathname-translations
        :logical-local-directory "MON"
-       :logical-ql-directory     "QL"
+       :logical-ql-directory    "QL"
        :env-local-code-var      "CL_MON_CODE"))
 ;;
 ;; (translate-logical-pathname "BASE-FASL:MON;")
@@ -247,7 +247,8 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
         '("UNICLY;**;*.*"       "BASE-FASL:MON;" "unicly")
         '("CLIME;**;*.*"        "BASE-FASL:MON;" "clime")
         '("CL-BMP;**;*.*"       "BASE-FASL:MON;" "cl-bmp")
-        '("FSDB;**;*.*"         "BASE-FASL:MON;" "fsdb-niko-fork-GIT")
+        '("FSDB;**;*.*"         "BASE-FASL:MON;" "fsdb-FORK")
+        '("LANGUTILS;**;*.*"    "BASE-FASL:MON;" "langutils-FORK")
         '("QL;**;*.*"           "BASE-FASL:QL;")
         '("QUICKLISP;**;*.*"    "BASE-FASL:QL;"))
        '(("**;*.*"              "BASE-FASL:**;*.*")
@@ -265,10 +266,10 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 ;; (translate-logical-pathname "FASL:bubba;")
 ;; (translate-logical-pathname "FASL:;bubba;")
 
-(let ((local-wild 
-       (make-pathname 
+(let ((local-wild
+       (make-pathname
         :directory (nconc (pathname-directory (%%env-local-code-path)) (list :wild-inferiors))
-        :name :wild 
+        :name :wild
         :type :wild)))
   (setf (logical-pathname-translations "BASE-MON")
         `((";**;*.*" ,local-wild)
@@ -280,34 +281,40 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
        '("DBC-SPECIFIC;**;*.*" "BASE-MON:" "dbc-specific")
        '("UNICLY;**;*.*"       "BASE-MON:" "unicly")
        '("CLIME;**;*.*"        "BASE-MON:" "clime")
-       '("FSDB;**;*.*"         "BASE-MON:" "fsdb-niko-fork-GIT")
-       '("CL-BMP;**;*.*"       "BASE-MON:"  "cl-bmp")
-       '(";**;*.*"             "BASE-MON:")              
+       '("CL-BMP;**;*.*"       "BASE-MON:" "cl-bmp")
+       '("FSDB;**;*.*"         "BASE-MON:" "fsdb-FORK")
+       '("LANGUTILS;**;*.*"    "BASE-MON:" "langutils-FORK")
+       '(";**;*.*"             "BASE-MON:")
        '("**;*.*"              "BASE-MON:")))
 ;;
 ;; (logical-pathname-translations "MON")
-;; (translate-logical-pathname  "MON:mon-systems;")
-;; (translate-logical-pathname  "MON:mon-systems;bubba;")
-;; (translate-logical-pathname  "MON:dbc-specific;")
-;; (translate-logical-pathname  "MON:dbc-specific;bubba;")
-;; (translate-logical-pathname  "MON:unicly;")
-;; (translate-logical-pathname  "MON:mon-slime-extend;")
-;; (translate-logical-pathname  "MON:user-man-port;")
+;; (translate-logical-pathname "MON:mon-systems;")
+;; (translate-logical-pathname "MON:mon-systems;bubba;")
+;; (translate-logical-pathname "MON:dbc-specific;")
+;; (translate-logical-pathname "MON:dbc-specific;bubba;")
+;; (translate-logical-pathname "MON:unicly;")
+;; (translate-logical-pathname "MON:mon-slime-extend;")
+;; (translate-logical-pathname "MON:user-man-port;")
 
 (loop
-   for logical in (list "MON:mon-slime-extend;" "MON:clime;"
-                        "MON:fsdb-niko-fork-GIT;" "MON:cl-bmp;"
-                        "MON:unicly;" "MON:dbc-specific;" "MON:mon-systems;")
+   for logical in (list "MON:mon-slime-extend;"
+                        "MON:langutils-FORK;"
+                        "MON:fsdb-FORK;"
+                        "MON:clime;"
+                        "MON:cl-bmp;"
+                        "MON:unicly;" 
+                        "MON:dbc-specific;"
+                        "MON:mon-systems;")
    for transpath = (translate-logical-pathname logical)
-   unless (member transpath asdf:*central-registry* 
-                  :test #'(lambda (namex namey) 
+   unless (member transpath asdf:*central-registry*
+                  :test #'(lambda (namex namey)
                             (string= (directory-namestring namex)
                                      (directory-namestring namey))))
-   do (and (probe-file transpath) 
+   do (and (probe-file transpath)
 	   (push transpath asdf:*central-registry*))
    finally (return asdf:*central-registry*))
 
-#+quicklisp 
+#+quicklisp
 (defun mon-load-systems (systems)
   (ql:quickload systems :verbose t :explain t))
 
