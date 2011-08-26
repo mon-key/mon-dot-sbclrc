@@ -247,7 +247,8 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
         '("UNICLY;**;*.*"       "BASE-FASL:MON;" "unicly")
         '("CLIME;**;*.*"        "BASE-FASL:MON;" "clime")
         '("CL-BMP;**;*.*"       "BASE-FASL:MON;" "cl-bmp")
-        '("IMAGE-OPS;**;*.*"    "BASE-FASL:MON;" "mon-image-ops")
+        '("IMAGE-OPS;**;*.*"    "BASE-FASL:MON;" "image-ops")
+        '("TIFF4CL;**;*.*"      "BASE-FASL:MON;" "tiff4cl-FORK")
         '("FSDB;**;*.*"         "BASE-FASL:MON;" "fsdb-FORK")
         '("LANGUTILS;**;*.*"    "BASE-FASL:MON;" "langutils-FORK")
         '("QL;**;*.*"           "BASE-FASL:QL;")
@@ -261,6 +262,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 ;; (translate-logical-pathname "FASL:unicly;")
 ;; (translate-logical-pathname "FASL:unicly;tests;")
 ;; (translate-logical-pathname "FASL:clime;")
+;; (translate-logical-pathname "FASL:image-ops;")
 ;; (translate-logical-pathname "FASL:QUICKLISP;")
 ;; (translate-logical-pathname "FASL:")
 ;; (translate-logical-pathname "FASL:;")
@@ -282,18 +284,22 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
        '("DBC-SPECIFIC;**;*.*" "BASE-MON:" "dbc-specific")
        '("UNICLY;**;*.*"       "BASE-MON:" "unicly")
        '("CLIME;**;*.*"        "BASE-MON:" "clime")
-       '("CL-BMP;**;*.*"       "BASE-MON:" "cl-bmp")
-       '("IMAGE-OPS;**;*.*"    "BASE-MON;" "mon-image-ops")
+       '("CL-BMP;**;*.*"       "BASE-MON:" "cl-bmp")       
+       '("IMAGE-OPS;**;*.*"    "BASE-MON:" "image-ops")
+       '("TIFF4CL;**;*.*"      "BASE-MON:" "tiff4cl-FORK")
        '("FSDB;**;*.*"         "BASE-MON:" "fsdb-FORK")
        '("LANGUTILS;**;*.*"    "BASE-MON:" "langutils-FORK")
        '(";**;*.*"             "BASE-MON:")
        '("**;*.*"              "BASE-MON:")))
+
+;; (%%map-wild-logicals
+;;  '("IMAGE-OPS;**;*.*"    "BASE-MON;" "image-ops"))
 ;;
 ;; (logical-pathname-translations "MON")
 ;; (translate-logical-pathname "MON:mon-systems;")
 ;; (translate-logical-pathname "MON:mon-systems;bubba;")
 ;; (translate-logical-pathname "MON:unicly;")
-;; (translate-logical-pathname "MON:mon-image-ops;")
+;; (translate-logical-pathname "MON:image-ops;")
 ;; (translate-logical-pathname "MON:clime;")
 ;; (translate-logical-pathname "MON:cl-bmp;")
 
@@ -301,9 +307,10 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
    for logical in (list "MON:mon-slime-extend;"
                         "MON:langutils-FORK;"
                         "MON:fsdb-FORK;"
+                        "MON:tiff4cl-FORK"
                         "MON:clime;"
+                        "MON:image-ops;"
                         "MON:cl-bmp;"
-                        "MON:mon-image-ops"
                         "MON:unicly;" 
                         "MON:dbc-specific;"
                         "MON:mon-systems;")
