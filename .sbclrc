@@ -76,7 +76,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
     (unless env-val
       (error "arg ENVIRONMENTAL-VARIABLE not in current process environment, got: ~S"
              environmental-variable))
-    (setf env-val 
+    (setf env-val
           (pathname
            (case (char env-val (1- (length env-val)))
              (#\/ env-val)
@@ -247,6 +247,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
         '("UNICLY;**;*.*"       "BASE-FASL:MON;" "unicly")
         '("CLIME;**;*.*"        "BASE-FASL:MON;" "clime")
         '("CL-BMP;**;*.*"       "BASE-FASL:MON;" "cl-bmp")
+        '("IMAGE-OPS;**;*.*"    "BASE-FASL:MON;" "mon-image-ops")
         '("FSDB;**;*.*"         "BASE-FASL:MON;" "fsdb-FORK")
         '("LANGUTILS;**;*.*"    "BASE-FASL:MON;" "langutils-FORK")
         '("QL;**;*.*"           "BASE-FASL:QL;")
@@ -282,6 +283,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
        '("UNICLY;**;*.*"       "BASE-MON:" "unicly")
        '("CLIME;**;*.*"        "BASE-MON:" "clime")
        '("CL-BMP;**;*.*"       "BASE-MON:" "cl-bmp")
+       '("IMAGE-OPS;**;*.*"    "BASE-MON;" "mon-image-ops")
        '("FSDB;**;*.*"         "BASE-MON:" "fsdb-FORK")
        '("LANGUTILS;**;*.*"    "BASE-MON:" "langutils-FORK")
        '(";**;*.*"             "BASE-MON:")
@@ -290,11 +292,10 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 ;; (logical-pathname-translations "MON")
 ;; (translate-logical-pathname "MON:mon-systems;")
 ;; (translate-logical-pathname "MON:mon-systems;bubba;")
-;; (translate-logical-pathname "MON:dbc-specific;")
-;; (translate-logical-pathname "MON:dbc-specific;bubba;")
 ;; (translate-logical-pathname "MON:unicly;")
-;; (translate-logical-pathname "MON:mon-slime-extend;")
-;; (translate-logical-pathname "MON:user-man-port;")
+;; (translate-logical-pathname "MON:mon-image-ops;")
+;; (translate-logical-pathname "MON:clime;")
+;; (translate-logical-pathname "MON:cl-bmp;")
 
 (loop
    for logical in (list "MON:mon-slime-extend;"
@@ -302,6 +303,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
                         "MON:fsdb-FORK;"
                         "MON:clime;"
                         "MON:cl-bmp;"
+                        "MON:mon-image-ops"
                         "MON:unicly;" 
                         "MON:dbc-specific;"
                         "MON:mon-systems;")
@@ -317,6 +319,12 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 #+quicklisp
 (defun mon-load-systems (systems)
   (ql:quickload systems :verbose t :explain t))
+
+;; ,----
+;; | #lisp 2011-08-13
+;; | <p_l|backup> (mapcar #'ql-dist:ensure-installed (ql:system-list)) 
+;; |               ;; For when a lisper goes away from internet :)
+;; `----
 
 ;;; ==============================
 ;;; .sbclrc ends here
