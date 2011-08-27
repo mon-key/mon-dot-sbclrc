@@ -249,6 +249,8 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
         '("CL-BMP;**;*.*"       "BASE-FASL:MON;" "cl-bmp")
         '("IMAGE-OPS;**;*.*"    "BASE-FASL:MON;" "image-ops")
         '("TIFF4CL;**;*.*"      "BASE-FASL:MON;" "tiff4cl-FORK")
+        '("SCLF-FORK;**;*.*"    "BASE-FASL:MON;" "sclf-FORK")
+        '("METAFS-FORK;**;*.*"  "BASE-FASL:MON;" "metafs-FORK")
         '("FSDB;**;*.*"         "BASE-FASL:MON;" "fsdb-FORK")
         '("LANGUTILS;**;*.*"    "BASE-FASL:MON;" "langutils-FORK")
         '("QL;**;*.*"           "BASE-FASL:QL;")
@@ -287,6 +289,8 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
        '("CL-BMP;**;*.*"       "BASE-MON:" "cl-bmp")       
        '("IMAGE-OPS;**;*.*"    "BASE-MON:" "image-ops")
        '("TIFF4CL;**;*.*"      "BASE-MON:" "tiff4cl-FORK")
+       '("SCLF-FORK;**;*.*"    "BASE-MON:" "sclf-FORK")
+       '("METAFS-FORK;**;*.*"  "BASE-MON:" "metafs-FORK")
        '("FSDB;**;*.*"         "BASE-MON:" "fsdb-FORK")
        '("LANGUTILS;**;*.*"    "BASE-MON:" "langutils-FORK")
        '(";**;*.*"             "BASE-MON:")
@@ -307,7 +311,9 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
    for logical in (list "MON:mon-slime-extend;"
                         "MON:langutils-FORK;"
                         "MON:fsdb-FORK;"
-                        "MON:tiff4cl-FORK"
+                        "MON:tiff4cl-FORK;"
+                        "MON:sclf-FORK;"
+                        "MON:metafs-FORK;"
                         "MON:clime;"
                         "MON:image-ops;"
                         "MON:cl-bmp;"
