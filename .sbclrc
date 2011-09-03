@@ -253,6 +253,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
         '("METAFS-FORK;**;*.*"  "BASE-FASL:MON;" "metafs-FORK")
         '("FSDB;**;*.*"         "BASE-FASL:MON;" "fsdb-FORK")
         '("LANGUTILS;**;*.*"    "BASE-FASL:MON;" "langutils-FORK")
+        '("VIVACE;**;*.*"       "BASE-FASL:MON;" "vivace-graph-v2-FORK")
         '("QL;**;*.*"           "BASE-FASL:QL;")
         '("QUICKLISP;**;*.*"    "BASE-FASL:QL;"))
        '(("**;*.*"              "BASE-FASL:**;*.*")
@@ -293,6 +294,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
        '("METAFS-FORK;**;*.*"  "BASE-MON:" "metafs-FORK")
        '("FSDB;**;*.*"         "BASE-MON:" "fsdb-FORK")
        '("LANGUTILS;**;*.*"    "BASE-MON:" "langutils-FORK")
+       '("VIVACE;**;*.*"       "BASE-MON:" "vivace-graph-v2-FORK")
        '(";**;*.*"             "BASE-MON:")
        '("**;*.*"              "BASE-MON:")))
 
@@ -310,6 +312,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 (loop
    for logical in (list "MON:mon-slime-extend;"
                         "MON:langutils-FORK;"
+                        "MON:vivace-graph-v2-FORK;"
                         "MON:fsdb-FORK;"
                         "MON:tiff4cl-FORK;"
                         "MON:sclf-FORK;"
