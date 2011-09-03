@@ -308,21 +308,23 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 ;; (translate-logical-pathname "MON:image-ops;")
 ;; (translate-logical-pathname "MON:clime;")
 ;; (translate-logical-pathname "MON:cl-bmp;")
+;; (translate-logical-pathname "MON:vivace-graph-v2-FORK;")
+;; (logical-pathname-translations "MON")
 
 (loop
    for logical in (list "MON:mon-slime-extend;"
-                        "MON:langutils-FORK;"
-                        "MON:vivace-graph-v2-FORK;"
-                        "MON:fsdb-FORK;"
-                        "MON:tiff4cl-FORK;"
-                        "MON:sclf-FORK;"
-                        "MON:metafs-FORK;"
-                        "MON:clime;"
-                        "MON:image-ops;"
-                        "MON:cl-bmp;"
-                        "MON:unicly;" 
-                        "MON:dbc-specific;"
-                        "MON:mon-systems;")
+                        "MON:LANGUTILS;"
+                        "MON:VIVACE;"
+                        "MON:FSDB;"
+                        "MON:TIFF4CL;"
+                        "MON:SCLF-FORK;"
+                        "MON:METAFS-FORK;"
+                        "MON:CLIME;"
+                        "MON:IMAGE-OPS;"
+                        "MON:CL-BMP;"
+                        "MON:UNICLY;" 
+                        "MON:DBC-SPECIFIC;"
+                        "MON:MON-SYSTEMS;")
    for transpath = (translate-logical-pathname logical)
    unless (member transpath asdf:*central-registry*
                   :test #'(lambda (namex namey)
