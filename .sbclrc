@@ -295,6 +295,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
        '("FSDB;**;*.*"         "BASE-MON:" "fsdb-FORK")
        '("LANGUTILS;**;*.*"    "BASE-MON:" "langutils-FORK")
        '("VIVACE;**;*.*"       "BASE-MON:" "vivace-graph-v2-FORK")
+       '("MON-AUX;**;*.*"      "BASE-MON:"  "mon-auxillary-loadtime-configs")
        '(";**;*.*"             "BASE-MON:")
        '("**;*.*"              "BASE-MON:")))
 
@@ -333,6 +334,14 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
    do (and (probe-file transpath)
 	   (push transpath asdf:*central-registry*))
    finally (return asdf:*central-registry*))
+
+;; If the file aux-configs.lisp exist load it.
+;; aux-configs.lisp contains stuff we're not ready to put in our ~/.sbclrc or
+;; that we don't want to fully commit too b/c we're testing or its one-off
+;; stuff.
+(let ((chk-aux (probe-file (translate-logical-pathname "MON:MON-AUX;aux-configs.lisp"))))
+  (when chk-aux
+    (load chk-aux)))
 
 #+quicklisp
 (defun mon-load-systems (systems)
