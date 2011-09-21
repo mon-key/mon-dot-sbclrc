@@ -29,11 +29,6 @@
 
 (pushnew :IS-MON cl:*features*)
 
-;; #+sbcl (require :asdf)
-#+sbcl (require :sb-posix)
-
-;; :NOTE SBCL `*core-pathname*', `*runtime-pathname*'
-
 ;;; ==============================
 ;; :FOLLOWING added per the quicklisp-beta 2010100700
 ;;; The following lines added by ql:add-to-init-file:
@@ -46,6 +41,13 @@
   (when (probe-file quicklisp-init)
     (load quicklisp-init)))
 
+
+;; lets try putting this after quicklisp
+;; #+sbcl (require :asdf)
+#+sbcl (require :sb-posix) 
+
+;; :NOTE SBCL `*core-pathname*', `*runtime-pathname*'
+
 ;; asdf:*output-translations-parameter*
 ;; (setf asdf::*output-translations*
 ;; (asdf:clear-output-translations)
@@ -53,9 +55,14 @@
 
 ;;; for line-edit
 ;;; Check for --no-linedit command-line option.
+#+sbcl
 (if (member "--no-linedit" sb-ext:*posix-argv* :test 'equal)
-    (setf sb-ext:*posix-argv*
-	  (remove "--no-linedit" sb-ext:*posix-argv* :test 'equal))
+    (progn
+      (terpri *terminal-io*)
+      (princ "saw arg --no-linedit at init time" *terminal-io*) ;; *standard-output*)
+      (terpri *terminal-io*)
+      (setf sb-ext:*posix-argv*
+            (remove "--no-linedit" sb-ext:*posix-argv* :test 'equal)))
     (when (interactive-stream-p *terminal-io*)
       ;; (setf (asdf::output-translations)  (asdf:clear-output-translations)
       ;; (set  (sb-posix:setenv  "ASDF_OUTPUT_TRANSLATIONS=" )
@@ -72,7 +79,8 @@ Default is \"CL_MON_CODE\".
 An error is signaled if ENVIRONMENTAL-VARIABLE is not present in the current process environment.
 An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directory."
   (declare (string environmental-variable))
-  (let ((env-val (sb-posix:getenv (string-upcase environmental-variable))))
+  (let ((env-val #+sbcl  (sb-posix:getenv (string-upcase environmental-variable))
+                 #+clisp (ext:getenv (string-upcase environmental-variable))))
     (unless env-val
       (error "arg ENVIRONMENTAL-VARIABLE not in current process environment, got: ~S"
              environmental-variable))
@@ -81,7 +89,8 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
            (case (char env-val (1- (length env-val)))
              (#\/ env-val)
              (t  (concatenate 'string env-val '(#\/))))))
-    (let ((probe-exists (probe-file env-val)))
+    (let ((probe-exists #+sbcl (probe-file env-val)
+                        #+clisp (ext:probe-pathname env-val)))
       (unless probe-exists
         (error "arg ENVIRONMENTAL-VARIABLE does not designate an existing file or directory, got: ~S"
                env-val))
@@ -157,8 +166,10 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
 (defun %%build-base-fasl-logical-pathname-translations (&key (logical-local-directory "MON")
                                                              (logical-ql-directory    "QL")
                                                              (env-local-code-var      "CL_MON_CODE")
-                                                             (system-os               :LINUX)
-                                                             (system-proc             :X86))
+                                                             (system-os               #+sbcl  :LINUX 
+                                                                                      #+clisp :UNIX)
+                                                             (system-proc             #+sbcl  :X86
+                                                                                      #+clisp :PC386))
   (declare (string logical-local-directory logical-ql-directory  env-local-code-var)
            ((or symbol keyword) system-os system-proc)
            (optimize (speed 3)))
@@ -176,7 +187,9 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
            (imp-version-os-arch-string ()
              (format nil "~(~A-~A-~A-~A~)"
                      (lisp-implementation-type)
-                     (lisp-implementation-version)
+                     #+sbcl (lisp-implementation-version)
+                     #+clisp (let ((l-i-v (lisp-implementation-version)))
+                               (subseq l-i-v 0 (position #\space l-i-v)))
                      (car (member system-os   *features*))
                      (car (member system-proc *features*))))
            (partial-logical-namestring (logical-dir)
@@ -254,6 +267,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
         '("FSDB;**;*.*"         "BASE-FASL:MON;" "fsdb-FORK")
         '("LANGUTILS;**;*.*"    "BASE-FASL:MON;" "langutils-FORK")
         '("VIVACE;**;*.*"       "BASE-FASL:MON;" "vivace-graph-v2-FORK")
+        '("WILBUR-FORK;**;*.*"  "BASE-FASL:MON;" "wilbur-FORK")
         '("QL;**;*.*"           "BASE-FASL:QL;")
         '("QUICKLISP;**;*.*"    "BASE-FASL:QL;"))
        '(("**;*.*"              "BASE-FASL:**;*.*")
@@ -295,6 +309,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
        '("FSDB;**;*.*"         "BASE-MON:" "fsdb-FORK")
        '("LANGUTILS;**;*.*"    "BASE-MON:" "langutils-FORK")
        '("VIVACE;**;*.*"       "BASE-MON:" "vivace-graph-v2-FORK")
+       '("WILBUR-FORK;**;*.*"  "BASE-MON:" "wilbur-FORK")
        '("MON-AUX;**;*.*"      "BASE-MON:"  "mon-auxillary-loadtime-configs")
        '(";**;*.*"             "BASE-MON:")
        '("**;*.*"              "BASE-MON:")))
@@ -316,6 +331,7 @@ An error is signaled if ENVIRONMENTAL-VARIABLE does not name an existing directo
    for logical in (list "MON:mon-slime-extend;"
                         "MON:LANGUTILS;"
                         "MON:VIVACE;"
+                        "MON:WILBUR-FORK;src;"
                         "MON:FSDB;"
                         "MON:TIFF4CL;"
                         "MON:SCLF-FORK;"
